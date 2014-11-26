@@ -3,7 +3,7 @@ class Page extends SiteTree {
 
 	private static $db = array(
         "RightContent" => "HTMLText",
-        "isShowInFooter" => "Boolean"
+        "ShowInFooter" => "Boolean"
 	);
 
 	private static $has_one = array(
@@ -25,7 +25,7 @@ class Page extends SiteTree {
         $fields = parent::getSettingsFields();
 
         // 3rd param is insert before, want to add ours to the settings tab (1st arg) BEFORE the "show in search"
-        $fields->addFieldToTab("Root.Settings", CheckboxField::create('isShowInFooter', 'Show in footer'),"ShowInSearch");
+        $fields->addFieldToTab("Root.Settings", CheckboxField::create('ShowInFooter', 'Show in footer'),"ShowInSearch");
 
         return $fields;
     }
@@ -57,4 +57,10 @@ class Page_Controller extends ContentController {
 		// See: http://doc.silverstripe.org/framework/en/reference/requirements
 	}
 
+    // want a fn here to show all the pages with isShowInMenu
+    public function FooterMenu() {
+        $footerPages = Page::get()->filter("ShowInFooter", true);
+
+        return $footerPages;
+    }
 }
